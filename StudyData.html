@@ -1,0 +1,2379 @@
+<!DOCTYPE html>
+<html class="w-mod-js w-mod-no-touch w-mod-video w-mod-no-ios wf-roboto-n3-active wf-roboto-n4-active wf-roboto-n5-active wf-robotoslab-n4-active wf-active" style="">
+<head>
+    <meta charset="utf-8">
+    <title>ChatGPT Study Data</title>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta content="Webflow" name="generator">
+    <link href="https://daks2k3a4ib2z.cloudfront.net/560eb94ab52962bd77dfcf14/css/template-method.webflow.cd9516ad2.css" rel="stylesheet" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,500%7CRoboto+Slab=">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=EB+Garamond">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <script type="text/javascript">WebFont.load({
+    google: {
+      families: ["Roboto:300,500","Roboto Slab","EB Garamond"]
+    }
+  });
+  </script>
+  <script src="https://daks2k3a4ib2z.cloudfront.net/0globals/modernizr-2.7.1.js" type="text/javascript"></script>
+  <link href="https://lucinder.github.io/lucinder_logo.png" rel="shortcut icon">
+  <link href="https://lucinder.github.io/lucinder_logo.png" rel="apple-touch-icon">
+  <script type="text/javascript">
+    let inv = 0, q = 1; // FCI = 0, CCI = 1
+    let navNumbers, prevLink, nextLink, questionList, qs, qCount;
+    const qDataLimit = 8;
+    const appendNavButton = (index) => {
+        const newButton = document.createElement("button");
+        newButton.className = "page-link";
+        newButton.innerHTML = index;
+        newButton.setAttribute("q-num", index);
+        newButton.setAttribute("aria-label", "Question " + index);
+        if(index<20){
+            navNumbers.appendChild(newButton);
+        } else {
+            navNumbersOverflow.appendChild(newButton);
+        }
+        
+    };
+    const getButtons = () => {
+        navNumbers.innerHTML = "";
+        for(let i=1; i <= qCount; i++){
+            appendNavButton(i);
+        }
+    };
+    const setQ = (newQ) => {
+        console.log("Updating question!");
+        q = newQ;
+        console.log("Question number updated to " + q);
+        setActive();
+        const prevRange = (newQ - 1)*qDataLimit;
+        const newRange = newQ*qDataLimit;
+        qs.forEach((item, index)=>{
+            item.setAttribute("hidden", true);
+            if(index >= prevRange && index < newRange){
+                item.removeAttribute("hidden");
+            }
+        });
+    };
+    const setInv = (newInv) => {
+        console.log("Updating inventory!");
+        inv = newInv;
+        console.log("Inventory number updated to " + inv);
+        navNumbers = document.getElementById("navNumbers"+inv);
+        navNumbersOverflow = document.getElementById("navNumbers"+inv+"Overflow");
+        prevLink = document.getElementById("navP"+inv);
+        nextLink = document.getElementById("navN"+inv);
+        questionList = document.getElementById("questions"+inv);
+        console.log("Was question list found? " + (typeof(questionList) != null));
+        qs = questionList.querySelectorAll("li");
+        qCount = Math.ceil(qs.length/qDataLimit);
+        console.log("Q count calculated: " + qCount);
+        getButtons();
+        setQ(1);
+        document.querySelectorAll(".page-link").forEach((button)=>{
+            const qIndex = Number(button.getAttribute("q-num"));
+            if(qIndex){
+                button.addEventListener("click",()=>{
+                    setQ(qIndex);
+                });
+            }
+        });
+    };
+    const setActive = () => {
+        document.querySelectorAll(".page-link").forEach((button)=>{
+            button.classList.remove("active"); // set all other buttons to be inactive
+            const qIndex = Number(button.getAttribute("q-num"));
+            if(qIndex && (qIndex == q)){ // set the current q's button to be active
+                button.classList.add("active");
+            }
+        });
+    };
+    prevLink.addEventListener("click",()=>{ // handle prev navigation
+        if(q>1) setQ(q-1);
+    });
+    nextLink.addEventListener("click",()=>{ // handle next navigation
+        if(q<qCount) setQ(q+1);
+    });
+    /**
+    window.addEventListener("load", () => { // on load, set our active inv to FCI and active q to 1
+        setInv(0);
+    });
+    */
+  </script>
+  <style>
+    li{
+        list-style: none;
+    }
+    .btn-sm{
+        --bs-btn-padding-y:0.0rem;
+    }
+  </style>
+  <link href="wbbw.css" rel="stylesheet" type="text/css">
+</head>
+    
+  <body class="wb">
+    <div class="hero" style="background-image:none;">
+        <div class="logo wb mt-4 p-5 text-black rounded">
+            <h1>ChatGPT Study Data</h1>
+            <p>This page contains all the raw data collected from testing prompts based on the Force Concept Inventory and Chemical Concepts Inventory for this study.</p>
+            <p class="small">If more data is collected in the future, it may be added here!</p>
+        </div>
+      <div class="hero-container w-container" style="margin-top:0px">
+        <div>
+            <p>
+                <a class="btn btn-secondary" data-bs-toggle="collapse" href="#FCI" role="button" aria-expanded="false" aria-controls="FCI" style="margin:10px;" onclick="setInv(0)">
+                  Force Concept Inventory
+                </a>
+            </p>
+            <div class="collapse" id="FCI">
+                <div class="card card-body">
+                    <nav class="pagination" style="margin:10px;">
+                        <div id="navNumbers0" class = "w-container hstack justify-content-sm-center"></div>
+                        <div id="navNumbers0Overflow" class = "w-container hstack justify-content-sm-center"></div>
+                    </nav>
+                    <div id="q-content" aria-live="polite">
+                        <ul id="questions0">
+                            <li>
+                                <p><b>Question Number: </b> 1</p>
+                                <p><b>Transcribed Question: </b> 1.	Two metal balls are the same size, but one weighs twice as much as the other. The balls are dropped from the top of a two story building at the same instant of time. The time it takes the balls to reach the ground below will be:</p>
+                                    <p>(A)	About half as long for the heavier ball.</p>
+                                    <p>(B)	About half as long for the lighter ball.</p>
+                                    <p>(C)	About the same time for both balls.</p>
+                                    <p>(D)	Considerably less for the heavier ball, but not necessarily half as long.</p>
+                                    <p>(E)	Considerably less for the lighter ball, but not necessarily half as long.
+                                    </p>
+                                <p><b>Correct Letter Response: </b> C</p>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ1T1" role="button" aria-expanded="false" aria-controls="FCIQ1T1">
+                                    Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ1T1">
+                                    <p><b>GPT Letter Response: </b>C</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ1T2" role="button" aria-expanded="false" aria-controls="FCIQ1T2">
+                                    Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ1T2">
+                                    <p><b>GPT Letter Response: </b>C</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ1T3" role="button" aria-expanded="false" aria-controls="#FCIQ1T3">
+                                    Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ1T3">
+                                    <p><b>GPT Letter Response: </b>C</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ1T4" role="button" aria-expanded="false" aria-controls="#FCIQ1T4">
+                                    Trial 4
+                                </a>
+                                <div class="collapse" id="FCIQ1T4">
+                                    <p><b>GPT Letter Response: </b>C</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ1T5" role="button" aria-expanded="false" aria-controls="#FCIQ1T5">
+                                    Trial 5
+                                </a>
+                                <div class="collapse" id="FCIQ1T5">
+                                    <p><b>GPT Letter Response: </b></p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ1T6" role="button" aria-expanded="false" aria-controls="#FCIQ1T6">
+                                    Variant Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ1T6">
+                                    <p><b>GPT Letter Response: </b>C</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ1T7" role="button" aria-expanded="false" aria-controls="#FCIQ1T7">
+                                    Variant Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ1T7">
+                                    <p><b>GPT Letter Response: </b>C</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ1T8" role="button" aria-expanded="false" aria-controls="#FCIQ1T8">
+                                    Variant Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ1T8">
+                                    <p><b>GPT Letter Response: </b>C</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+
+                            <li>
+                                <p><b>Question Number: </b> 2</p>
+                                <p><b>Transcribed Question: </b>2.	Imagine a head-on collision between a large truck and a small compact car. During the collision,</p>
+                                <p>(A)	The truck exerts a greater amount of force on the car than the car exerts on the truck.</p>
+                                <p>(B)	The car exerts a greater amount of force on the truck than the truck exert on the car.</p>
+                                <p>(C)	Neither exerts a force on the other, the car gets smashed simply because it gets in the way of the truck.</p>
+                                <p>(D)	The truck exerts a force on the car but the car doesn’t exert a force on the truck.</p>
+                                <p>(E)	The truck exerts the same amount of force on the car as the car exerts on the truck.</p>
+                                <p><b>Correct Letter Response: </b> E</p>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T1" role="button" aria-expanded="false" aria-controls="FCIQ2T1">
+                                    Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T1">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T2" role="button" aria-expanded="false" aria-controls="FCIQ2T2">
+                                    Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T2">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T3" role="button" aria-expanded="false" aria-controls="#FCIQ2T3">
+                                    Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T3">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T4" role="button" aria-expanded="false" aria-controls="#FCIQ2T4">
+                                    Trial 4
+                                </a>
+                                <div class="collapse" id="FCIQ2T4">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T5" role="button" aria-expanded="false" aria-controls="#FCIQ2T5">
+                                    Trial 5
+                                </a>
+                                <div class="collapse" id="FCIQ2T5">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T6" role="button" aria-expanded="false" aria-controls="#FCIQ2T6">
+                                    Variant Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T6">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T7" role="button" aria-expanded="false" aria-controls="#FCIQ2T7">
+                                    Variant Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T7">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T8" role="button" aria-expanded="false" aria-controls="#FCIQ2T8">
+                                    Variant Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T8">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+
+                            <li>
+                                <p><b>Question Number: </b> 3</p>
+                                <p><b>Transcribed Question: </b> 3.	Two steel balls, one of which weighs twice as much as the other, roll off of a horizontal table with the same speeds. In this situation:</p>
+                                <p>(A)	Both balls impact the floor at approximately the same horizontal distance from the base of the table.</p>
+                                <p>(B)	The heavier ball impacts the floor at about half the horizontal distance from the base of the table than does the lighter.</p>
+                                <p>(C)	The lighter ball impacts the floor at about half the horizontal distance from the base of the table than does the heavier.</p>
+                                <p>(D)	The heavier ball hits considerably closer to the base of the table than the lighter, but not necessarily half the horizontal distance.</p>
+                                <p>(E)	The lighter ball hits considerably closer to the base of the table than the heavier, but not necessarily half the horizontal distance.</p>
+                                <p><b>Correct Letter Response: </b> A</p>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ3T1" role="button" aria-expanded="false" aria-controls="FCIQ3T1">
+                                    Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ3T1">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ3T2" role="button" aria-expanded="false" aria-controls="FCIQ3T2">
+                                    Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ3T2">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ3T3" role="button" aria-expanded="false" aria-controls="#FCIQ3T3">
+                                    Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ3T3">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ3T4" role="button" aria-expanded="false" aria-controls="#FCIQ3T4">
+                                    Trial 4
+                                </a>
+                                <div class="collapse" id="FCIQ3T4">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ3T5" role="button" aria-expanded="false" aria-controls="#FCIQ3T5">
+                                    Trial 5
+                                </a>
+                                <div class="collapse" id="FCIQ3T5">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ3T6" role="button" aria-expanded="false" aria-controls="#FCIQ3T6">
+                                    Variant Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ3T6">
+                                    <p><b>GPT Letter Response: </b>D</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ3T7" role="button" aria-expanded="false" aria-controls="#FCIQ3T7">
+                                    Variant Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ3T7">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ3T8" role="button" aria-expanded="false" aria-controls="#FCIQ3T8">
+                                    Variant Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ3T8">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+
+                            
+                            <li>
+                                <p><b>Question Number: </b> 4</p>
+                                <p><b>Transcribed Question: </b> q4</p>
+                                <p><b>Correct Letter Response: </b> B</p>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ4T1" role="button" aria-expanded="false" aria-controls="FCIQ4T1">
+                                    Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ4T1">
+                                    <p><b>GPT Letter Response: </b>B</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ4T2" role="button" aria-expanded="false" aria-controls="FCIQ4T2">
+                                    Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ4T2">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ4T3" role="button" aria-expanded="false" aria-controls="#FCIQ4T3">
+                                    Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ4T3">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ4T4" role="button" aria-expanded="false" aria-controls="#FCIQ4T4">
+                                    Trial 4
+                                </a>
+                                <div class="collapse" id="FCIQ4T4">
+                                    <p><b>GPT Letter Response: </b>B</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ4T5" role="button" aria-expanded="false" aria-controls="#FCIQ4T5">
+                                    Trial 5
+                                </a>
+                                <div class="collapse" id="FCIQ4T5">
+                                    <p><b>GPT Letter Response: </b>D</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ4T6" role="button" aria-expanded="false" aria-controls="#FCIQ4T6">
+                                    Variant Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ4T6">
+                                    <p><b>GPT Letter Response: </b>D</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ4T7" role="button" aria-expanded="false" aria-controls="#FCIQ4T7">
+                                    Variant Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ4T7">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ4T8" role="button" aria-expanded="false" aria-controls="#FCIQ4T8">
+                                    Variant Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ4T8">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+
+                            
+                            
+                            <li>
+                                <p><b>Question Number: </b> 5</p>
+                                <p><b>Transcribed Question: </b> q5</p>
+                                <p><b>Correct Letter Response: </b> D</p>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T1" role="button" aria-expanded="false" aria-controls="FCIQ2T1">
+                                    Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T1">
+                                    <p><b>GPT Letter Response: </b>D</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T2" role="button" aria-expanded="false" aria-controls="FCIQ2T2">
+                                    Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T2">
+                                    <p><b>GPT Letter Response: </b>C</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T3" role="button" aria-expanded="false" aria-controls="#FCIQ2T3">
+                                    Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T3">
+                                    <p><b>GPT Letter Response: </b>D</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T4" role="button" aria-expanded="false" aria-controls="#FCIQ2T4">
+                                    Trial 4
+                                </a>
+                                <div class="collapse" id="FCIQ2T4">
+                                    <p><b>GPT Letter Response: </b>D</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T5" role="button" aria-expanded="false" aria-controls="#FCIQ2T5">
+                                    Trial 5
+                                </a>
+                                <div class="collapse" id="FCIQ2T5">
+                                    <p><b>GPT Letter Response: </b>C</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T6" role="button" aria-expanded="false" aria-controls="#FCIQ2T6">
+                                    Variant Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T6">
+                                    <p><b>GPT Letter Response: </b>C</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T7" role="button" aria-expanded="false" aria-controls="#FCIQ2T7">
+                                    Variant Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T7">
+                                    <p><b>GPT Letter Response: </b>C</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T8" role="button" aria-expanded="false" aria-controls="#FCIQ2T8">
+                                    Variant Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T8">
+                                    <p><b>GPT Letter Response: </b>C</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+
+                            <li>
+                                <p><b>Question Number: </b> 6</p>
+                                <p><b>Transcribed Question: </b> q6</p>
+                                <p><b>Correct Letter Response: </b> A</p>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T1" role="button" aria-expanded="false" aria-controls="FCIQ2T1">
+                                    Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T1">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T2" role="button" aria-expanded="false" aria-controls="FCIQ2T2">
+                                    Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T2">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T3" role="button" aria-expanded="false" aria-controls="#FCIQ2T3">
+                                    Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T3">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T4" role="button" aria-expanded="false" aria-controls="#FCIQ2T4">
+                                    Trial 4
+                                </a>
+                                <div class="collapse" id="FCIQ2T4">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T5" role="button" aria-expanded="false" aria-controls="#FCIQ2T5">
+                                    Trial 5
+                                </a>
+                                <div class="collapse" id="FCIQ2T5">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T6" role="button" aria-expanded="false" aria-controls="#FCIQ2T6">
+                                    Variant Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T6">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T7" role="button" aria-expanded="false" aria-controls="#FCIQ2T7">
+                                    Variant Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T7">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T8" role="button" aria-expanded="false" aria-controls="#FCIQ2T8">
+                                    Variant Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T8">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            
+                            <li>
+                                <p><b>Question Number: </b> 7</p>
+                                <p><b>Transcribed Question: </b> q7</p>
+                                <p><b>Correct Letter Response: </b> A</p>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T1" role="button" aria-expanded="false" aria-controls="FCIQ2T1">
+                                    Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T1">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T2" role="button" aria-expanded="false" aria-controls="FCIQ2T2">
+                                    Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T2">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T3" role="button" aria-expanded="false" aria-controls="#FCIQ2T3">
+                                    Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T3">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T4" role="button" aria-expanded="false" aria-controls="#FCIQ2T4">
+                                    Trial 4
+                                </a>
+                                <div class="collapse" id="FCIQ2T4">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T5" role="button" aria-expanded="false" aria-controls="#FCIQ2T5">
+                                    Trial 5
+                                </a>
+                                <div class="collapse" id="FCIQ2T5">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T6" role="button" aria-expanded="false" aria-controls="#FCIQ2T6">
+                                    Variant Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T6">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T7" role="button" aria-expanded="false" aria-controls="#FCIQ2T7">
+                                    Variant Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T7">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T8" role="button" aria-expanded="false" aria-controls="#FCIQ2T8">
+                                    Variant Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T8">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            
+                            <li>
+                                <p><b>Question Number: </b> 8</p>
+                                <p><b>Transcribed Question: </b> q8</p>
+                                <p><b>Correct Letter Response: </b> A</p>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T1" role="button" aria-expanded="false" aria-controls="FCIQ2T1">
+                                    Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T1">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T2" role="button" aria-expanded="false" aria-controls="FCIQ2T2">
+                                    Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T2">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T3" role="button" aria-expanded="false" aria-controls="#FCIQ2T3">
+                                    Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T3">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T4" role="button" aria-expanded="false" aria-controls="#FCIQ2T4">
+                                    Trial 4
+                                </a>
+                                <div class="collapse" id="FCIQ2T4">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T5" role="button" aria-expanded="false" aria-controls="#FCIQ2T5">
+                                    Trial 5
+                                </a>
+                                <div class="collapse" id="FCIQ2T5">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T6" role="button" aria-expanded="false" aria-controls="#FCIQ2T6">
+                                    Variant Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T6">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T7" role="button" aria-expanded="false" aria-controls="#FCIQ2T7">
+                                    Variant Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T7">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T8" role="button" aria-expanded="false" aria-controls="#FCIQ2T8">
+                                    Variant Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T8">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            
+                            <li>
+                                <p><b>Question Number: </b> 9</p>
+                                <p><b>Transcribed Question: </b> q9</p>
+                                <p><b>Correct Letter Response: </b> A</p>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T1" role="button" aria-expanded="false" aria-controls="FCIQ2T1">
+                                    Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T1">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T2" role="button" aria-expanded="false" aria-controls="FCIQ2T2">
+                                    Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T2">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T3" role="button" aria-expanded="false" aria-controls="#FCIQ2T3">
+                                    Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T3">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T4" role="button" aria-expanded="false" aria-controls="#FCIQ2T4">
+                                    Trial 4
+                                </a>
+                                <div class="collapse" id="FCIQ2T4">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T5" role="button" aria-expanded="false" aria-controls="#FCIQ2T5">
+                                    Trial 5
+                                </a>
+                                <div class="collapse" id="FCIQ2T5">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T6" role="button" aria-expanded="false" aria-controls="#FCIQ2T6">
+                                    Variant Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T6">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T7" role="button" aria-expanded="false" aria-controls="#FCIQ2T7">
+                                    Variant Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T7">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T8" role="button" aria-expanded="false" aria-controls="#FCIQ2T8">
+                                    Variant Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T8">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            
+                            <li>
+                                <p><b>Question Number: </b> 10</p>
+                                <p><b>Transcribed Question: </b> q10</p>
+                                <p><b>Correct Letter Response: </b> A</p>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T1" role="button" aria-expanded="false" aria-controls="FCIQ2T1">
+                                    Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T1">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T2" role="button" aria-expanded="false" aria-controls="FCIQ2T2">
+                                    Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T2">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T3" role="button" aria-expanded="false" aria-controls="#FCIQ2T3">
+                                    Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T3">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T4" role="button" aria-expanded="false" aria-controls="#FCIQ2T4">
+                                    Trial 4
+                                </a>
+                                <div class="collapse" id="FCIQ2T4">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T5" role="button" aria-expanded="false" aria-controls="#FCIQ2T5">
+                                    Trial 5
+                                </a>
+                                <div class="collapse" id="FCIQ2T5">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T6" role="button" aria-expanded="false" aria-controls="#FCIQ2T6">
+                                    Variant Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T6">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T7" role="button" aria-expanded="false" aria-controls="#FCIQ2T7">
+                                    Variant Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T7">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T8" role="button" aria-expanded="false" aria-controls="#FCIQ2T8">
+                                    Variant Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T8">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            
+                            <li>
+                                <p><b>Question Number: </b> 12</p>
+                                <p><b>Transcribed Question: </b> q12</p>
+                                <p><b>Correct Letter Response: </b> A</p>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T1" role="button" aria-expanded="false" aria-controls="FCIQ2T1">
+                                    Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T1">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T2" role="button" aria-expanded="false" aria-controls="FCIQ2T2">
+                                    Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T2">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T3" role="button" aria-expanded="false" aria-controls="#FCIQ2T3">
+                                    Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T3">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T4" role="button" aria-expanded="false" aria-controls="#FCIQ2T4">
+                                    Trial 4
+                                </a>
+                                <div class="collapse" id="FCIQ2T4">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T5" role="button" aria-expanded="false" aria-controls="#FCIQ2T5">
+                                    Trial 5
+                                </a>
+                                <div class="collapse" id="FCIQ2T5">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T6" role="button" aria-expanded="false" aria-controls="#FCIQ2T6">
+                                    Variant Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T6">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T7" role="button" aria-expanded="false" aria-controls="#FCIQ2T7">
+                                    Variant Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T7">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T8" role="button" aria-expanded="false" aria-controls="#FCIQ2T8">
+                                    Variant Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T8">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            
+                            <li>
+                                <p><b>Question Number: </b> 13</p>
+                                <p><b>Transcribed Question: </b> q13</p>
+                                <p><b>Correct Letter Response: </b> A</p>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T1" role="button" aria-expanded="false" aria-controls="FCIQ2T1">
+                                    Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T1">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T2" role="button" aria-expanded="false" aria-controls="FCIQ2T2">
+                                    Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T2">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T3" role="button" aria-expanded="false" aria-controls="#FCIQ2T3">
+                                    Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T3">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T4" role="button" aria-expanded="false" aria-controls="#FCIQ2T4">
+                                    Trial 4
+                                </a>
+                                <div class="collapse" id="FCIQ2T4">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T5" role="button" aria-expanded="false" aria-controls="#FCIQ2T5">
+                                    Trial 5
+                                </a>
+                                <div class="collapse" id="FCIQ2T5">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T6" role="button" aria-expanded="false" aria-controls="#FCIQ2T6">
+                                    Variant Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T6">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T7" role="button" aria-expanded="false" aria-controls="#FCIQ2T7">
+                                    Variant Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T7">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T8" role="button" aria-expanded="false" aria-controls="#FCIQ2T8">
+                                    Variant Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T8">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            
+                            <li>
+                                <p><b>Question Number: </b> 14</p>
+                                <p><b>Transcribed Question: </b> q14</p>
+                                <p><b>Correct Letter Response: </b> A</p>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T1" role="button" aria-expanded="false" aria-controls="FCIQ2T1">
+                                    Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T1">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T2" role="button" aria-expanded="false" aria-controls="FCIQ2T2">
+                                    Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T2">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T3" role="button" aria-expanded="false" aria-controls="#FCIQ2T3">
+                                    Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T3">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T4" role="button" aria-expanded="false" aria-controls="#FCIQ2T4">
+                                    Trial 4
+                                </a>
+                                <div class="collapse" id="FCIQ2T4">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T5" role="button" aria-expanded="false" aria-controls="#FCIQ2T5">
+                                    Trial 5
+                                </a>
+                                <div class="collapse" id="FCIQ2T5">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T6" role="button" aria-expanded="false" aria-controls="#FCIQ2T6">
+                                    Variant Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T6">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T7" role="button" aria-expanded="false" aria-controls="#FCIQ2T7">
+                                    Variant Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T7">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T8" role="button" aria-expanded="false" aria-controls="#FCIQ2T8">
+                                    Variant Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T8">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            
+                            <li>
+                                <p><b>Question Number: </b> 4</p>
+                                <p><b>Transcribed Question: </b> q4</p>
+                                <p><b>Correct Letter Response: </b> A</p>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T1" role="button" aria-expanded="false" aria-controls="FCIQ2T1">
+                                    Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T1">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T2" role="button" aria-expanded="false" aria-controls="FCIQ2T2">
+                                    Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T2">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T3" role="button" aria-expanded="false" aria-controls="#FCIQ2T3">
+                                    Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T3">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T4" role="button" aria-expanded="false" aria-controls="#FCIQ2T4">
+                                    Trial 4
+                                </a>
+                                <div class="collapse" id="FCIQ2T4">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T5" role="button" aria-expanded="false" aria-controls="#FCIQ2T5">
+                                    Trial 5
+                                </a>
+                                <div class="collapse" id="FCIQ2T5">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T6" role="button" aria-expanded="false" aria-controls="#FCIQ2T6">
+                                    Variant Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T6">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T7" role="button" aria-expanded="false" aria-controls="#FCIQ2T7">
+                                    Variant Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T7">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T8" role="button" aria-expanded="false" aria-controls="#FCIQ2T8">
+                                    Variant Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T8">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            
+                            <li>
+                                <p><b>Question Number: </b> 15</p>
+                                <p><b>Transcribed Question: </b> q15</p>
+                                <p><b>Correct Letter Response: </b> A</p>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T1" role="button" aria-expanded="false" aria-controls="FCIQ2T1">
+                                    Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T1">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T2" role="button" aria-expanded="false" aria-controls="FCIQ2T2">
+                                    Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T2">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T3" role="button" aria-expanded="false" aria-controls="#FCIQ2T3">
+                                    Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T3">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T4" role="button" aria-expanded="false" aria-controls="#FCIQ2T4">
+                                    Trial 4
+                                </a>
+                                <div class="collapse" id="FCIQ2T4">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T5" role="button" aria-expanded="false" aria-controls="#FCIQ2T5">
+                                    Trial 5
+                                </a>
+                                <div class="collapse" id="FCIQ2T5">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T6" role="button" aria-expanded="false" aria-controls="#FCIQ2T6">
+                                    Variant Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T6">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T7" role="button" aria-expanded="false" aria-controls="#FCIQ2T7">
+                                    Variant Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T7">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T8" role="button" aria-expanded="false" aria-controls="#FCIQ2T8">
+                                    Variant Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T8">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            
+                            <li>
+                                <p><b>Question Number: </b> 16</p>
+                                <p><b>Transcribed Question: </b> q16</p>
+                                <p><b>Correct Letter Response: </b> A</p>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T1" role="button" aria-expanded="false" aria-controls="FCIQ2T1">
+                                    Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T1">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T2" role="button" aria-expanded="false" aria-controls="FCIQ2T2">
+                                    Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T2">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T3" role="button" aria-expanded="false" aria-controls="#FCIQ2T3">
+                                    Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T3">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T4" role="button" aria-expanded="false" aria-controls="#FCIQ2T4">
+                                    Trial 4
+                                </a>
+                                <div class="collapse" id="FCIQ2T4">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T5" role="button" aria-expanded="false" aria-controls="#FCIQ2T5">
+                                    Trial 5
+                                </a>
+                                <div class="collapse" id="FCIQ2T5">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T6" role="button" aria-expanded="false" aria-controls="#FCIQ2T6">
+                                    Variant Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T6">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T7" role="button" aria-expanded="false" aria-controls="#FCIQ2T7">
+                                    Variant Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T7">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T8" role="button" aria-expanded="false" aria-controls="#FCIQ2T8">
+                                    Variant Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T8">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            
+                            <li>
+                                <p><b>Question Number: </b> 17</p>
+                                <p><b>Transcribed Question: </b> q17</p>
+                                <p><b>Correct Letter Response: </b> A</p>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T1" role="button" aria-expanded="false" aria-controls="FCIQ2T1">
+                                    Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T1">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T2" role="button" aria-expanded="false" aria-controls="FCIQ2T2">
+                                    Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T2">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T3" role="button" aria-expanded="false" aria-controls="#FCIQ2T3">
+                                    Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T3">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T4" role="button" aria-expanded="false" aria-controls="#FCIQ2T4">
+                                    Trial 4
+                                </a>
+                                <div class="collapse" id="FCIQ2T4">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T5" role="button" aria-expanded="false" aria-controls="#FCIQ2T5">
+                                    Trial 5
+                                </a>
+                                <div class="collapse" id="FCIQ2T5">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T6" role="button" aria-expanded="false" aria-controls="#FCIQ2T6">
+                                    Variant Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T6">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T7" role="button" aria-expanded="false" aria-controls="#FCIQ2T7">
+                                    Variant Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T7">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T8" role="button" aria-expanded="false" aria-controls="#FCIQ2T8">
+                                    Variant Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T8">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            
+                            <li>
+                                <p><b>Question Number: </b> 18</p>
+                                <p><b>Transcribed Question: </b> q18</p>
+                                <p><b>Correct Letter Response: </b> A</p>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T1" role="button" aria-expanded="false" aria-controls="FCIQ2T1">
+                                    Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T1">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T2" role="button" aria-expanded="false" aria-controls="FCIQ2T2">
+                                    Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T2">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T3" role="button" aria-expanded="false" aria-controls="#FCIQ2T3">
+                                    Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T3">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T4" role="button" aria-expanded="false" aria-controls="#FCIQ2T4">
+                                    Trial 4
+                                </a>
+                                <div class="collapse" id="FCIQ2T4">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T5" role="button" aria-expanded="false" aria-controls="#FCIQ2T5">
+                                    Trial 5
+                                </a>
+                                <div class="collapse" id="FCIQ2T5">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T6" role="button" aria-expanded="false" aria-controls="#FCIQ2T6">
+                                    Variant Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T6">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T7" role="button" aria-expanded="false" aria-controls="#FCIQ2T7">
+                                    Variant Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T7">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T8" role="button" aria-expanded="false" aria-controls="#FCIQ2T8">
+                                    Variant Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T8">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            
+                            <li>
+                                <p><b>Question Number: </b> 19</p>
+                                <p><b>Transcribed Question: </b> q19</p>
+                                <p><b>Correct Letter Response: </b> A</p>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T1" role="button" aria-expanded="false" aria-controls="FCIQ2T1">
+                                    Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T1">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T2" role="button" aria-expanded="false" aria-controls="FCIQ2T2">
+                                    Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T2">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T3" role="button" aria-expanded="false" aria-controls="#FCIQ2T3">
+                                    Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T3">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T4" role="button" aria-expanded="false" aria-controls="#FCIQ2T4">
+                                    Trial 4
+                                </a>
+                                <div class="collapse" id="FCIQ2T4">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T5" role="button" aria-expanded="false" aria-controls="#FCIQ2T5">
+                                    Trial 5
+                                </a>
+                                <div class="collapse" id="FCIQ2T5">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T6" role="button" aria-expanded="false" aria-controls="#FCIQ2T6">
+                                    Variant Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T6">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T7" role="button" aria-expanded="false" aria-controls="#FCIQ2T7">
+                                    Variant Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T7">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T8" role="button" aria-expanded="false" aria-controls="#FCIQ2T8">
+                                    Variant Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T8">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            
+                            <li>
+                                <p><b>Question Number: </b> 20</p>
+                                <p><b>Transcribed Question: </b> q20</p>
+                                <p><b>Correct Letter Response: </b> A</p>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T1" role="button" aria-expanded="false" aria-controls="FCIQ2T1">
+                                    Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T1">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T2" role="button" aria-expanded="false" aria-controls="FCIQ2T2">
+                                    Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T2">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T3" role="button" aria-expanded="false" aria-controls="#FCIQ2T3">
+                                    Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T3">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T4" role="button" aria-expanded="false" aria-controls="#FCIQ2T4">
+                                    Trial 4
+                                </a>
+                                <div class="collapse" id="FCIQ2T4">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T5" role="button" aria-expanded="false" aria-controls="#FCIQ2T5">
+                                    Trial 5
+                                </a>
+                                <div class="collapse" id="FCIQ2T5">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T6" role="button" aria-expanded="false" aria-controls="#FCIQ2T6">
+                                    Variant Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T6">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T7" role="button" aria-expanded="false" aria-controls="#FCIQ2T7">
+                                    Variant Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T7">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T8" role="button" aria-expanded="false" aria-controls="#FCIQ2T8">
+                                    Variant Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T8">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            
+                            <li>
+                                <p><b>Question Number: </b> 21</p>
+                                <p><b>Transcribed Question: </b> q21</p>
+                                <p><b>Correct Letter Response: </b> A</p>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T1" role="button" aria-expanded="false" aria-controls="FCIQ2T1">
+                                    Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T1">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T2" role="button" aria-expanded="false" aria-controls="FCIQ2T2">
+                                    Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T2">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T3" role="button" aria-expanded="false" aria-controls="#FCIQ2T3">
+                                    Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T3">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T4" role="button" aria-expanded="false" aria-controls="#FCIQ2T4">
+                                    Trial 4
+                                </a>
+                                <div class="collapse" id="FCIQ2T4">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T5" role="button" aria-expanded="false" aria-controls="#FCIQ2T5">
+                                    Trial 5
+                                </a>
+                                <div class="collapse" id="FCIQ2T5">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T6" role="button" aria-expanded="false" aria-controls="#FCIQ2T6">
+                                    Variant Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T6">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T7" role="button" aria-expanded="false" aria-controls="#FCIQ2T7">
+                                    Variant Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T7">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T8" role="button" aria-expanded="false" aria-controls="#FCIQ2T8">
+                                    Variant Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T8">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            
+                            <li>
+                                <p><b>Question Number: </b> 22</p>
+                                <p><b>Transcribed Question: </b> q22</p>
+                                <p><b>Correct Letter Response: </b> A</p>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T1" role="button" aria-expanded="false" aria-controls="FCIQ2T1">
+                                    Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T1">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T2" role="button" aria-expanded="false" aria-controls="FCIQ2T2">
+                                    Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T2">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T3" role="button" aria-expanded="false" aria-controls="#FCIQ2T3">
+                                    Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T3">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T4" role="button" aria-expanded="false" aria-controls="#FCIQ2T4">
+                                    Trial 4
+                                </a>
+                                <div class="collapse" id="FCIQ2T4">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T5" role="button" aria-expanded="false" aria-controls="#FCIQ2T5">
+                                    Trial 5
+                                </a>
+                                <div class="collapse" id="FCIQ2T5">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T6" role="button" aria-expanded="false" aria-controls="#FCIQ2T6">
+                                    Variant Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T6">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T7" role="button" aria-expanded="false" aria-controls="#FCIQ2T7">
+                                    Variant Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T7">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T8" role="button" aria-expanded="false" aria-controls="#FCIQ2T8">
+                                    Variant Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T8">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            
+                            <li>
+                                <p><b>Question Number: </b> 23</p>
+                                <p><b>Transcribed Question: </b> q23</p>
+                                <p><b>Correct Letter Response: </b> A</p>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T1" role="button" aria-expanded="false" aria-controls="FCIQ2T1">
+                                    Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T1">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T2" role="button" aria-expanded="false" aria-controls="FCIQ2T2">
+                                    Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T2">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T3" role="button" aria-expanded="false" aria-controls="#FCIQ2T3">
+                                    Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T3">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T4" role="button" aria-expanded="false" aria-controls="#FCIQ2T4">
+                                    Trial 4
+                                </a>
+                                <div class="collapse" id="FCIQ2T4">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T5" role="button" aria-expanded="false" aria-controls="#FCIQ2T5">
+                                    Trial 5
+                                </a>
+                                <div class="collapse" id="FCIQ2T5">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T6" role="button" aria-expanded="false" aria-controls="#FCIQ2T6">
+                                    Variant Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T6">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T7" role="button" aria-expanded="false" aria-controls="#FCIQ2T7">
+                                    Variant Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T7">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T8" role="button" aria-expanded="false" aria-controls="#FCIQ2T8">
+                                    Variant Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T8">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            
+                            <li>
+                                <p><b>Question Number: </b> 24</p>
+                                <p><b>Transcribed Question: </b> q24</p>
+                                <p><b>Correct Letter Response: </b> A</p>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T1" role="button" aria-expanded="false" aria-controls="FCIQ2T1">
+                                    Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T1">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T2" role="button" aria-expanded="false" aria-controls="FCIQ2T2">
+                                    Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T2">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T3" role="button" aria-expanded="false" aria-controls="#FCIQ2T3">
+                                    Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T3">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T4" role="button" aria-expanded="false" aria-controls="#FCIQ2T4">
+                                    Trial 4
+                                </a>
+                                <div class="collapse" id="FCIQ2T4">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T5" role="button" aria-expanded="false" aria-controls="#FCIQ2T5">
+                                    Trial 5
+                                </a>
+                                <div class="collapse" id="FCIQ2T5">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T6" role="button" aria-expanded="false" aria-controls="#FCIQ2T6">
+                                    Variant Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T6">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T7" role="button" aria-expanded="false" aria-controls="#FCIQ2T7">
+                                    Variant Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T7">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T8" role="button" aria-expanded="false" aria-controls="#FCIQ2T8">
+                                    Variant Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T8">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            
+                            <li>
+                                <p><b>Question Number: </b> 25</p>
+                                <p><b>Transcribed Question: </b> q25</p>
+                                <p><b>Correct Letter Response: </b> A</p>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T1" role="button" aria-expanded="false" aria-controls="FCIQ2T1">
+                                    Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T1">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T2" role="button" aria-expanded="false" aria-controls="FCIQ2T2">
+                                    Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T2">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T3" role="button" aria-expanded="false" aria-controls="#FCIQ2T3">
+                                    Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T3">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T4" role="button" aria-expanded="false" aria-controls="#FCIQ2T4">
+                                    Trial 4
+                                </a>
+                                <div class="collapse" id="FCIQ2T4">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T5" role="button" aria-expanded="false" aria-controls="#FCIQ2T5">
+                                    Trial 5
+                                </a>
+                                <div class="collapse" id="FCIQ2T5">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T6" role="button" aria-expanded="false" aria-controls="#FCIQ2T6">
+                                    Variant Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T6">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T7" role="button" aria-expanded="false" aria-controls="#FCIQ2T7">
+                                    Variant Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T7">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T8" role="button" aria-expanded="false" aria-controls="#FCIQ2T8">
+                                    Variant Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T8">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            
+                            <li>
+                                <p><b>Question Number: </b> 26</p>
+                                <p><b>Transcribed Question: </b> q26</p>
+                                <p><b>Correct Letter Response: </b> A</p>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T1" role="button" aria-expanded="false" aria-controls="FCIQ2T1">
+                                    Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T1">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T2" role="button" aria-expanded="false" aria-controls="FCIQ2T2">
+                                    Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T2">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T3" role="button" aria-expanded="false" aria-controls="#FCIQ2T3">
+                                    Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T3">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T4" role="button" aria-expanded="false" aria-controls="#FCIQ2T4">
+                                    Trial 4
+                                </a>
+                                <div class="collapse" id="FCIQ2T4">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T5" role="button" aria-expanded="false" aria-controls="#FCIQ2T5">
+                                    Trial 5
+                                </a>
+                                <div class="collapse" id="FCIQ2T5">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T6" role="button" aria-expanded="false" aria-controls="#FCIQ2T6">
+                                    Variant Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T6">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T7" role="button" aria-expanded="false" aria-controls="#FCIQ2T7">
+                                    Variant Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T7">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T8" role="button" aria-expanded="false" aria-controls="#FCIQ2T8">
+                                    Variant Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T8">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            
+                            
+                            <li>
+                                <p><b>Question Number: </b> 27</p>
+                                <p><b>Transcribed Question: </b> q27</p>
+                                <p><b>Correct Letter Response: </b> A</p>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T1" role="button" aria-expanded="false" aria-controls="FCIQ2T1">
+                                    Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T1">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T2" role="button" aria-expanded="false" aria-controls="FCIQ2T2">
+                                    Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T2">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T3" role="button" aria-expanded="false" aria-controls="#FCIQ2T3">
+                                    Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T3">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T4" role="button" aria-expanded="false" aria-controls="#FCIQ2T4">
+                                    Trial 4
+                                </a>
+                                <div class="collapse" id="FCIQ2T4">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T5" role="button" aria-expanded="false" aria-controls="#FCIQ2T5">
+                                    Trial 5
+                                </a>
+                                <div class="collapse" id="FCIQ2T5">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T6" role="button" aria-expanded="false" aria-controls="#FCIQ2T6">
+                                    Variant Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T6">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T7" role="button" aria-expanded="false" aria-controls="#FCIQ2T7">
+                                    Variant Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T7">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T8" role="button" aria-expanded="false" aria-controls="#FCIQ2T8">
+                                    Variant Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T8">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            
+                            <li>
+                                <p><b>Question Number: </b> 28</p>
+                                <p><b>Transcribed Question: </b> q28</p>
+                                <p><b>Correct Letter Response: </b> A</p>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T1" role="button" aria-expanded="false" aria-controls="FCIQ2T1">
+                                    Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T1">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T2" role="button" aria-expanded="false" aria-controls="FCIQ2T2">
+                                    Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T2">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T3" role="button" aria-expanded="false" aria-controls="#FCIQ2T3">
+                                    Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T3">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T4" role="button" aria-expanded="false" aria-controls="#FCIQ2T4">
+                                    Trial 4
+                                </a>
+                                <div class="collapse" id="FCIQ2T4">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T5" role="button" aria-expanded="false" aria-controls="#FCIQ2T5">
+                                    Trial 5
+                                </a>
+                                <div class="collapse" id="FCIQ2T5">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T6" role="button" aria-expanded="false" aria-controls="#FCIQ2T6">
+                                    Variant Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T6">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T7" role="button" aria-expanded="false" aria-controls="#FCIQ2T7">
+                                    Variant Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T7">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T8" role="button" aria-expanded="false" aria-controls="#FCIQ2T8">
+                                    Variant Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T8">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            
+                            <li>
+                                <p><b>Question Number: </b> 29</p>
+                                <p><b>Transcribed Question: </b> q29</p>
+                                <p><b>Correct Letter Response: </b> A</p>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T1" role="button" aria-expanded="false" aria-controls="FCIQ2T1">
+                                    Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T1">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T2" role="button" aria-expanded="false" aria-controls="FCIQ2T2">
+                                    Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T2">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T3" role="button" aria-expanded="false" aria-controls="#FCIQ2T3">
+                                    Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T3">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T4" role="button" aria-expanded="false" aria-controls="#FCIQ2T4">
+                                    Trial 4
+                                </a>
+                                <div class="collapse" id="FCIQ2T4">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T5" role="button" aria-expanded="false" aria-controls="#FCIQ2T5">
+                                    Trial 5
+                                </a>
+                                <div class="collapse" id="FCIQ2T5">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T6" role="button" aria-expanded="false" aria-controls="#FCIQ2T6">
+                                    Variant Trial 1
+                                </a>
+                                <div class="collapse" id="FCIQ2T6">
+                                    <p><b>GPT Letter Response: </b>A</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T7" role="button" aria-expanded="false" aria-controls="#FCIQ2T7">
+                                    Variant Trial 2
+                                </a>
+                                <div class="collapse" id="FCIQ2T7">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ2T8" role="button" aria-expanded="false" aria-controls="#FCIQ2T8">
+                                    Variant Trial 3
+                                </a>
+                                <div class="collapse" id="FCIQ2T8">
+                                    <p><b>GPT Letter Response: </b>E</p>
+                                    <p><b>GPT Explanation: </b></p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                </div>
+              </div>
+              <p>
+                <a class="btn btn-secondary" data-bs-toggle="collapse" href="#CCI" role="button" aria-expanded="false" aria-controls="CCI" style="margin-top:10px">
+                  Chemical Concepts Inventory
+                </a>
+            </p>
+        </div>
+        <br>
+      </div>
+      <br style="margin-bottom:100px;">
+    </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js" type="text/javascript"></script>
+  <script src="https://daks2k3a4ib2z.cloudfront.net/560eb94ab52962bd77dfcf14/js/webflow.57f4ffb2a.js" type="text/javascript"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  <!--[if lte IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif]-->
+  </body></html>
