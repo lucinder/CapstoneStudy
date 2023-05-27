@@ -106,7 +106,7 @@
             data = JSON.parse(response)
             for(var i = 0; i < data.length; i++){
                 qNum = data[i];
-                console.log("Loaded json: " + qNum.name);
+                console.log("Loaded json for question " + qNum.Question);
                 let qLi = document.createElement("li");
                 let qTitle = document.createElement("p");
                 let qQues = document.createElement("p");
@@ -115,6 +115,8 @@
                 qQues.innerHTML = "<b>Transcribed Question: </b>" + qNum.Transcribed_Question;
                 qCorrect.innerHTML = "<b>Correct Letter Response: </b>" + qNum.Correct_Answer;
                 qLi.appendChild(qTitle);
+                qLi.appendChild(qQues);
+                qLi.appendChild(qCorrect);
                 questionList.appendChild(qLi);
                 for(let i = 1; i < 9; i++){
                     let trialLi = document.createElement("li");
@@ -189,7 +191,6 @@
         --bs-btn-padding-y:0.0rem;
     }
   </style>
-  <link href="wbbw.css" rel="stylesheet" type="text/css">
 </head>
     
   <body class="wb">
@@ -216,34 +217,13 @@
                     </nav>
                     <div id="q-content" aria-live="polite">
                         <ul id="questions0">
-                            <li>
-                                <p><b>Question Number: </b> 1</p>
-                                <p><b>Transcribed Question: </b> 1.	Two metal balls are the same size, but one weighs twice as much as the other. The balls are dropped from the top of a two story building at the same instant of time. The time it takes the balls to reach the ground below will be:</p>
-                                    <p>(A)	About half as long for the heavier ball.</p>
-                                    <p>(B)	About half as long for the lighter ball.</p>
-                                    <p>(C)	About the same time for both balls.</p>
-                                    <p>(D)	Considerably less for the heavier ball, but not necessarily half as long.</p>
-                                    <p>(E)	Considerably less for the lighter ball, but not necessarily half as long.
-                                    </p>
-                                <p><b>Correct Letter Response: </b> C</p>
-                            </li>
-                            <li>
-                                <a class="btn btn-secondary btn-sm" data-bs-toggle="collapse" href="#FCIQ1T1" role="button" aria-expanded="false" aria-controls="FCIQ1T1">
-                                    Trial 1
-                                </a>
-                                <div class="collapse" id="FCIQ1T1">
-                                    <p><b>GPT Letter Response: </b>C</p>
-                                    <p><b>GPT Explanation: </b></p>
-                                </div>
-                            </li>
                         </ul>
                     </div>
-                    
                 </div>
-              </div>
-              <p>
+            </div>
+            <p>
                 <a class="btn btn-secondary" data-bs-toggle="collapse" href="#CCI" role="button" aria-expanded="false" aria-controls="CCI" style="margin-top:10px">
-                  Chemical Concepts Inventory
+                    Chemical Concepts Inventory
                 </a>
             </p>
         </div>
