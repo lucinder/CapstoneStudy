@@ -152,7 +152,7 @@
         //jsonData= runPyScript();
         // questionList.innerHTML = jsonData;
         // if (newInv == 1) src = ;
-        loadQJson(questionList);
+        // loadQJson(questionList);
         qs = questionList.querySelectorAll("li"); // select all questions + trials
         qCount = Math.ceil(qs.length/qDataLimit); // get the number of qs in this inv
         console.log("Q count calculated: " + qCount);
@@ -184,6 +184,9 @@
         if(q<qCount) setQ(q+1);
     });
     */
+    document.onload = function(){
+        loadQJson(document.getElementById("questions0"));
+    }
   </script>
   <style>
     li{
