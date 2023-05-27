@@ -86,22 +86,8 @@
         };
         xhr.send(null);
     }
-    const setInv = (newInv) => {
-        console.log("Updating inventory!");
-        inv = newInv; // load in our inv number
-        console.log("Inventory number updated to " + inv);
-        navNumbers = document.getElementById("navNumbers"+inv); // update target numbers div
-        navNumbersOverflow = document.getElementById("navNumbers"+inv+"Overflow"); // update target overflow div
-        //prevLink = document.getElementById("navP"+inv);
-        //nextLink = document.getElementById("navN"+inv);
-        questionList = document.getElementById("questions"+inv); // load target question list
-        console.log("Was question list found? " + (typeof(questionList) != null));
-
-        //jsonData= runPyScript();
-        // questionList.innerHTML = jsonData;
+    const loadQJson = (questionList) =>{
         let src = "FCI_Data_Raw.json";
-        // if (newInv == 1) src = ;
-        
         loadJSON(src,function(response){
             data = JSON.parse(response)
             for(var i = 0; i < data.length; i++){
@@ -151,7 +137,21 @@
                 }
             }
         });
-        
+    };
+    const setInv = (newInv) => {
+        console.log("Updating inventory!");
+        inv = newInv; // load in our inv number
+        console.log("Inventory number updated to " + inv);
+        navNumbers = document.getElementById("navNumbers"+inv); // update target numbers div
+        navNumbersOverflow = document.getElementById("navNumbers"+inv+"Overflow"); // update target overflow div
+        //prevLink = document.getElementById("navP"+inv);
+        //nextLink = document.getElementById("navN"+inv);
+        questionList = document.getElementById("questions"+inv); // load target question list
+        console.log("Was question list found? " + (typeof(questionList) != null));
+        //jsonData= runPyScript();
+        // questionList.innerHTML = jsonData;
+        // if (newInv == 1) src = ;
+        loadQJson(questionList);
         qs = questionList.querySelectorAll("li"); // select all questions + trials
         qCount = Math.ceil(qs.length/qDataLimit); // get the number of qs in this inv
         console.log("Q count calculated: " + qCount);
