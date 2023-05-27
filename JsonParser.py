@@ -23,6 +23,4 @@ def loadJson():
             out += "\n</li>"
     return out
 if __name__ == "__main__":
-    print '''Access-Control-Allow-Origin: *\r\n''',
-    print '''Content-Type: text/html\r\n''' 
     return loadJson()
