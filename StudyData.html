@@ -31,7 +31,6 @@
     function runPyScript(input){
         var jqXHR = $.ajax({
             type: "POST",
-            crossDomain: true,
             url: "JsonParser.py",
             async: false,
             data: { param: input }
