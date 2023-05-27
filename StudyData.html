@@ -87,6 +87,7 @@
         xhr.send(null);
     }
     const loadQJson = (questionList) =>{
+        console.log("Loading json!");
         let src = "FCI_Data_Raw.json";
         loadJSON(src,function(response){
             data = JSON.parse(response)
