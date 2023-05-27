@@ -31,6 +31,7 @@
     function runPyScript(input){
         var jqXHR = $.ajax({
             type: "POST",
+            crossDomain: true,
             url: "JsonParser.py",
             async: false,
             data: { param: input }
@@ -84,21 +85,21 @@
         questionList = document.getElementById("questions"+inv); // load target question list
         console.log("Was question list found? " + (typeof(questionList) != null));
 
-        jsonData= runPyScript();
-        questionList.innerHTML = jsonData;
-        //let src = "https://lucinder.github.io/CapstoneStudy/FCI_Data_Raw.json";
+        //jsonData= runPyScript();
+        // questionList.innerHTML = jsonData;
+        let src = "FCI_Data_Raw.json";
         // if (newInv == 1) src = ;
-        /*
-        $.getJSON(src, { get_param: 'value' },function(json) {
+        
+        $.getJSON(src,function(json) {
             $.each(json,function(i,qNum){
                 console.log("Loaded json: " + qNum.name);
                 let qLi = document.createElement("li");
                 let qTitle = document.createElement("p");
                 let qQues = document.createElement("p");
                 let qCorrect = document.createElement("p");
-                qTitle.innerHTML = "<b>Question Number: </b>" + qNum["Question #"];
-                qQues.innerHTML = "<b>Transcribed Question: </b>" + qNum["Transcribed Question"];
-                qCorrect.innerHTML = "<b>Correct Letter Response: </b>";
+                qTitle.innerHTML = "<b>Question Number: </b>" + qNum.Question;
+                qQues.innerHTML = "<b>Transcribed Question: </b>" + qNum.Transcribed_Question;
+                qCorrect.innerHTML = "<b>Correct Letter Response: </b>" + qNum.Correct_Answer;
                 qLi.appendChild(qTitle);
                 questionList.appendChild(qLi);
                 for(let i = 1; i < 9; i++){
@@ -108,19 +109,22 @@
                     liHead.className = "btn btn-secondary btn-sm";
                     if(i<6) liHead.innerHTML = "Trial " + i;
                     else liHead.innerHTML = "Variant Trial " + (i-5);
-                    liHead.setAttribute("href","#FCIQ"+qNum+"T"+i);
+                    liHead.setAttribute("href","#FCIQ"+qNum.Question+"T"+i);
                     liHead.setAttribute("data-bs-toggle","collapse");
                     liHead.setAttribute("role","button");
                     liHead.setAttribute("aria-expanded","false");
-                    liHead.setAttribute("aria-controls","FCIQ1T1");
+                    liHead.setAttribute("aria-controls","FCIQ"+qNum.Question+"T"+i);
                     // trial content collapse section
                     let liContent = document.createElement("div");
                     liContent.className = "collapse";
+                    liContent.id = "FCIQ"+qNum.Question+"T"+i;
                     // gpt response + explanations
                     let gptLetter = document.createElement("p");
-                    gptLetter.innerHTML = "<b>GPT Letter Response: </b>" + qNum["T"+i+" Answer"];
+                    let ans = (i==1?qNum.T1_Answer:(i==2?qNum.T2_Answer:(i==3?qNum.T3_Answer:(i==4?qNum.T4_Answer:(i==5?qNum.T5_Answer:(i==6?qNum.T6_Answer:(i==7?qNum.T7_Answer:qNum.T8_Answer)))))));
+                    let ex = (i==1?qNum.T1_Explanation:(i==2?qNum.T2_Explanation:(i==3?qNum.T3_Explanation:(i==4?qNum.T4_Explanation:(i==5?qNum.T5_Explanation:(i==6?qNum.T6_Explanation:(i==7?qNum.T7_Explanation:qNum.T8_Explanation)))))));
+                    gptLetter.innerHTML = "<b>GPT Letter Response: </b>" + ans;
                     let gptExplanation = document.createElement("p");
-                    gptExplanation.innerHTML = "<b>GPT Explanation: </b>" + qNum["T"+i+" Explanation"];
+                    gptExplanation.innerHTML = "<b>GPT Explanation: </b>" + ex;
                     // append everything to its respective sections
                     liContent.appendChild(gptLetter);
                     liContent.appendChild(gptExplanation);
@@ -130,7 +134,7 @@
                 }
             });
         });
-        */
+        
         qs = questionList.querySelectorAll("li"); // select all questions + trials
         qCount = Math.ceil(qs.length/qDataLimit); // get the number of qs in this inv
         console.log("Q count calculated: " + qCount);
