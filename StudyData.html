@@ -106,12 +106,13 @@
             data = JSON.parse(response)
             for(var i = 0; i < data.length; i++){
                 qNum = data[i];
-                console.log("Loaded json for question " + qNum.Question);
+                qNo = qNum.QuestionNo;
+                console.log("Loaded json for question " + qNo);
                 let qLi = document.createElement("li");
                 let qTitle = document.createElement("p");
                 let qQues = document.createElement("p");
                 let qCorrect = document.createElement("p");
-                qTitle.innerHTML = "<b>Question Number: </b>" + qNum.Question;
+                qTitle.innerHTML = "<b>Question Number: </b>" + qNo;
                 qQues.innerHTML = "<b>Transcribed Question: </b>" + qNum.Transcribed_Question;
                 qCorrect.innerHTML = "<b>Correct Letter Response: </b>" + qNum.Correct_Answer;
                 qLi.appendChild(qTitle);
@@ -125,15 +126,15 @@
                     liHead.className = "btn btn-secondary btn-sm";
                     if(i<6) liHead.innerHTML = "Trial " + i;
                     else liHead.innerHTML = "Variant Trial " + (i-5);
-                    liHead.setAttribute("href","#FCIQ"+qNum.Question+"T"+i);
+                    liHead.setAttribute("href","#FCIQ"+qNo+"T"+i);
                     liHead.setAttribute("data-bs-toggle","collapse");
                     liHead.setAttribute("role","button");
                     liHead.setAttribute("aria-expanded","false");
-                    liHead.setAttribute("aria-controls","FCIQ"+qNum.Question+"T"+i);
+                    liHead.setAttribute("aria-controls","FCIQ"+qNo+"T"+i);
                     // trial content collapse section
                     let liContent = document.createElement("div");
                     liContent.className = "collapse";
-                    liContent.id = "FCIQ"+qNum.Question+"T"+i;
+                    liContent.id = "FCIQ"+qNo+"T"+i;
                     // gpt response + explanations
                     let gptLetter = document.createElement("p");
                     let ans = (i==1?qNum.T1_Answer:(i==2?qNum.T2_Answer:(i==3?qNum.T3_Answer:(i==4?qNum.T4_Answer:(i==5?qNum.T5_Answer:(i==6?qNum.T6_Answer:(i==7?qNum.T7_Answer:qNum.T8_Answer)))))));
