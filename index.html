@@ -1,0 +1,295 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta name="title" content="ChatGPT Study">
+    <title>ChatGPT Study</title>
+    <meta name="description" content="ChatGPT reflects student misconceptions in physics and chemistry.">
+    <!-- Bootstrap CSS and JS packages -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <!-- W3Schools "Start Page" stylesheet -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-colors-flat.css">
+    <!-- CSS for hexagon badges and all related items taken from Olivia Ng on codepen -->
+    <style> 
+    body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
+    .w3-bar,h1,button {font-family: "Montserrat", sans-serif}
+    .fa-anchor,.fa-coffee {font-size:200px}
+      td{padding-left:4px; padding-right:8px;}
+      th{padding-left:4px;}
+     .toc_container {
+	background: #f9f9f9 none repeat scroll 0 0;
+	border: 1px solid #aaa;
+	display: table;
+	font-size: 85%;
+	margin-bottom: 1em;
+	padding: 20px;
+	width: auto;
+     }
+     .toc_title {
+	font-weight: 700;
+     }
+     .toc_container li, .toc_container ul, .toc_container ul li{
+	list-style: outside none none !important;
+     }
+	.scalable {
+	  display: flex;
+	  flex-direction: column;
+	}
+     .scalable > textarea {
+	  flex: 1;
+	}
+    blockquote {
+        margin: 0;
+    }
+
+    blockquote p {
+        padding: 15px;
+        background: #eee;
+        border-radius: 5px;
+    }
+
+    blockquote p::before {
+        content: '\201C';
+    }
+
+    blockquote p::after {
+        content: '\201D';
+    }
+
+    </style>
+    <!-- JQuery Import -->
+  </head>
+  <body onload="init()">
+    <!-- Header -->
+    <header class="w3-container w3-black w3-center" style="padding-top:128px; padding-left:16px; padding-right:16px; padding-bottom:6px; background-image: url('images/char-generic.png'); background-repeat: no-repeat; background-attachment: fixed; background-size: 100% 100%" id="HEAD_CONTAINER">
+      <h1 class="w3-margin w3-jumbo" style="margin:50px;">ChatGPT Reflects Student Misconceptions</h1>
+      <p class="w3-text-grey">by Sav Wheeler, Rachel Scherr, & Charity Lovitt</p>
+      <p class="w3-xlarge" style="margin:50px;">With many students turning to machine learning models such as ChatGPT for homework help, diagnosing the accuracy of the information these technologies purport across different fields is more important than ever. In this study, we find that ChatGPT’s responses to standard physics and chemistry questions are consistent with an accurate theoretical understanding, but are often incorrect when applied to a given system, reflecting many of the same misconceptions as students.</p>
+      <br><br><br>
+    </header>  
+    <div class="w3-row-padding w3-light-grey w3-padding-64 w3-container" id = "toc-container">
+        <p class="toc_title">Jump to...</p>
+        <ul class="toc_list">
+        <li><a href="#INTRODUCTION">Introduction</a></li>
+        <li><a href="#METHOD">Method</a></li>
+        <li><a href="#DATA">Data</a>
+            <ul>
+            <li><a href="#A_PERF_OVERALL">Overall Performance</a></li>
+            <li><a href="#A_PERF_FCI">FCI Cluster Performance</a></li>
+            <li><a href="#A_PERF_CCI">CCI Cluster Performance</a></li>
+            </ul>	
+        </li>
+        <li><a href="#ANALYSIS">Analysis</a></li>
+        <li><a href="#RECOMMEND">Recommendations for Educators</a></li>
+        <li><a href="#BIBLIOGRAPHY">Bibliography</a></li>
+        </ul>
+    </div>
+    <!-- Introduction -->
+    <div class="w3-row-padding w3-padding-64 w3-container">
+        <div class="w3-content">
+        <h1 id="INTRODUCTION">Introduction</h1>
+        <br>
+        <p class="w3-text-dark-grey">Released in November of 2022, ChatGPT is a trained AI (artificial intelligence) model based on the large language model GPT-3.5, with a focus on training for a dialogue-based conversational format<sup><a href="#CITE_1">[1]</a></sup>. The AI gained widespread popularity soon after its release, including among students, who frequently used the AI for academic help<sup><a href="#CITE_2">[2, 3]</a></sup>. The potential for student use of GPT as a writing tool has sparked fears among educators of a new wave of plagiarism and cheating<sup><a href="#CITE_3">[3]</a></sup>, though text-checker tools have since been developed to mitigate this<sup><a href="#CITE_4">[4, 5]</a></sup>. ChatGPT has gained academic notoriety for passing or excelling at several large exams such as the SAT, GRE, and multiple AP tests<sup><a href="#CITE_6">[6]</a></sup>. However, these general benchmark tests may not be representative of field-specific student understandings, and in several cases, ChatGPT has not only failed an exam, but performed worse on average than student responses<sup>[7]</sup>.</p>
+        <p class="w3-text-dark-grey">Haensch et al.’s<sup><a href="#CITE_8">[8]</a></sup> evaluation of social media content relating to ChatGPT, in an effort to gauge student views on use of the program, suggests that students generally view ChatGPT positively in its applications and use for writing essays, generating code, and answering questions. Alongside this, their study suggests an under-representation on social media of ChatGPT’s capacity to generate misinformation in these applications. Bridging the gap between the content-critical academic perspective and opportunistic student perspectives on this technology will be essential, going forward, in ensuring students know the limitations of the tools at their disposal, and develop a degree of awareness of how generative AI technology can affect their learning for better or worse.		</p>
+        <p class="w3-text-dark-grey">In this study, we attempt to quantify the performance of ChatGPT on the Force Concept Inventory (FCI) and Chemical Concepts Inventory (CCI). While these inventories are not necessarily representative of the complete range of topics and concepts in introductory physics and chemistry courses, they contain a breadth of essential foundational concepts such as Newtonian laws, kinetics, stoichiometry, and conservation of mass. We focus on the categorical performance of ChatGPT on sets of questions in contrast to overall performance as well as a qualitative analysis of specific prompt responses indicative of misconceptions or limitations of the AI, especially those comparable to students’ own.</p>
+        <p class="w3-text-dark-grey">The purpose of this study is to examine the trends in ChatGPT’s responses to concept inventory questions as a means of quantifying its capabilities, limitations, and potential to inform or mislead students who use the chatbot. The quantitative analysis can provide a general overview of the accuracy of GPT’s responses, while the qualitative analysis can provide a more in-depth look at what particular skills or frameworks ChatGPT employs or fails to employ in its problem solving, and how these resources might be consistent with students’ misconceptions.</p>
+        </div>
+    </div>
+    <!-- Method -->
+    <div class="w3-row-padding w3-light-grey w3-padding-64 w3-container">
+        <div class="w3-content">
+    <h1 id="METHOD">Method</h1>
+    <br>
+    <p class="w3-text-dark-grey"></p>
+    <p class="w3-text-dark-grey">We prompted ChatGPT with questions based on the FCI and CCI. Because many of the questions were based on diagrams, written transcriptions of the diagrams were given for any question which depended on one, including any questions with answers that were a part of the diagram or other representative visuals. All prompts are included with ChatGPT’s responses on the website listed in the Data section of this paper. Five standard trials were run for the exam, where all questions for a trial were given in the same chatroom, including question numbers and lettered options. Three “variant” trials were also conducted, which tested different experimental changes to the testing method. Variant trial 1 had ChatGPT answer the questions individually in separate chatrooms. Variant trials 2 and 3 included a preliminary “roleplay” prompt to see if ChatGPT performs better or worse when taking on a given role, which were respectively:</p>
+    <ul>
+        <li class="w3-text-dark-grey">Variant 2: “Pretend you are a first-year [physics/chemistry] student taking an exam. Answer the following questions with your letter selection. I’ll start:”</li>
+        <li class="w3-text-dark-grey">Variant 3: “Pretend you are a [physics/chemistry] professor creating an answer key for an exam. Write the correct letter answers to the following questions. I’ll start:”</li>
+    </ul>
+    </div>
+    </div>
+    <!-- Data -->
+    <div class="w3-row-padding w3-padding-64 w3-container">
+        <div class="w3-content">
+        <h1 id="DATA">Data</h1>
+        <br>
+        <p class="w3-text-dark-grey">Raw data for responses can be found on at following <a href="https://lucinder.github.io/CapstoneStudy/StudyData.html">here</a>.</p>
+        <h5 id = "A_PERF_OVERALL">Overall Performance</h5>
+        <p class="w3-text-dark-grey">ChatGPT scored generally poorly on the FCI (x̄ = 51%, σ = 8.5%) and CCI (x̄ = 55%,  σ = 4.3%), with a distribution of predicted scores falling within 44%-59% and 51%-59% respectively with 99% confidence. An FCI score of 60% is considered to be an entry threshold to Newtonian physics [9]. Notably, GPT had a slightly lower median score (x̃ = 48%) than mean score on the FCI, indicating a slight right skew in scores.</p>
+        <h5 id = "A_PERF_FCI">FCI Cluster Performance</h5>
+        <p class="w3-text-dark-grey">The FCI outlines six “clusters” of concepts, as well as indicating which questions contain answers that rely on an understanding of each concept. Based on ChatGPT’s responses to questions containing answers corresponding to one or more of these concept clusters, we recorded the metrics of ChatGPT’s performance on different clusters.</p>
+        <p class="w3-text-dark-grey">Table I shows ChatGPT’s average scores on each FCI cluster along with their number of questions (<em>n<sub>q</sub></em>), standard deviations, and 99% confidence intervals of scores.</p>
+        <p style="text-align: center;"><b>TABLE I. Key figures from ChatGPT’s FCI cluster performance</b></p>
+        <table id="FIGURE_1" style="border:2px solid black; max-width: 60%; margin-left:auto; margin-right:auto; text-align: center;">
+            <tr class="w3-light-grey" style="border:1px solid black;">
+                <th style="border:1px solid black;">Concept Cluster</th>
+                <th style="border:1px solid black;"><em>n<sub>q</sub></em></th>
+                <th style="border:1px solid black;">x̄</th>
+                <th style="border:1px solid black;">σ</th>
+                <th style="border:1px solid black;">99% CI</th>
+            </tr>
+            <tr style="border:1px solid black;">
+                <td style="border:1px solid black;">Kinematics</td>
+                <td style="border:1px solid black;">7</td>
+                <td style="border:1px solid black;">23%</td>
+                <td style="border:1px solid black;">15%</td>
+                <td style="border:1px solid black;">[9.0%, 37%]</td>
+            </tr>
+            <tr style="border:1px solid black;">
+                <td style="border:1px solid black;">Newton’s First Law</td>
+                <td style="border:1px solid black;">8</td>
+                <td style="border:1px solid black;">63%</td>
+                <td style="border:1px solid black;">13%</td>
+                <td style="border:1px solid black;">[50%, 75%]</td>
+            </tr>
+            <tr style="border:1px solid black;">
+                <td style="border:1px solid black;">Newton’s Second Law</td>
+                <td style="border:1px solid black;">4</td>
+                <td style="border:1px solid black;">19%</td>
+                <td style="border:1px solid black;">29%</td>
+                <td style="border:1px solid black;">[0.0%, 45%]</td>
+            </tr>
+            <tr style="border:1px solid black;">
+                <td style="border:1px solid black;">Newton's Third Law</td>
+                <td style="border:1px solid black;">4</td>
+                <td style="border:1px solid black;">88%</td>
+                <td style="border:1px solid black;">19%</td>
+                <td style="border:1px solid black;">[70%, 100%]</td>
+            </tr>
+            <tr style="border:1px solid black;">
+                <td style="border:1px solid black;">Superposition Principle</td>
+                <td style="border:1px solid black;">4</td>
+                <td style="border:1px solid black;">63%</td>
+                <td style="border:1px solid black;">13%</td>
+                <td style="border:1px solid black;">[50%, 75%]</td>
+            </tr>
+            <tr style="border:1px solid black;">
+                <td style="border:1px solid black;">Types of Force</td>
+                <td style="border:1px solid black;">12</td>
+                <td style="border:1px solid black;">50%</td>
+                <td style="border:1px solid black;">10%</td>
+                <td style="border:1px solid black;">[41%, 59%]</td>
+            </tr>
+        </table>
+        <br>
+        <p class="w3-text-dark-grey">Fig. 1 also shows the average score on questions in each concept cluster on the FCI by ChatGPT, with margins of error indicated by thin lines on bars.</p>
+        <img src="figure1.png" alt="Figure 1: GPT Average Score by FCI Concept Cluster" style="max-width:40%; display: block; margin-left: auto; margin-right: auto;">
+        <h5 id = "A_PERF_CCI">CCI Cluster Performance</h5>
+        <p class="w3-text-dark-grey">Barbera and Schwartz’s<sup><a href="#CITE_11">[11]</a></sup> analysis of the CCI assigns questions to one or more of twelve general chemical concepts. In this paper, we will only include concepts with two or more associated questions as “clusters”, in an effort to ensure our representation of GPT’s performance on evaluated concepts is not limited to a single question. With this restriction in mind, there are six major clusters of concepts in the CCI. Likewise with the FCI’s concepts, we recorded the metrics of ChatGPT’s performance on these different clusters.</p>
+        <p class="w3-text-dark-grey">Table II shows ChatGPT’s average scores on each CCI cluster along with their number of questions (<em>n<sub>q</sub></em>), standard deviations, and 99% confidence intervals of scores.</p>
+        <p style="text-align: center;"><b>TABLE II. Key figures from ChatGPT’s CCI cluster performance</b></p>
+        <table id="FIGURE_2" style="border:2px solid black; max-width: 60%; margin-left:auto; margin-right:auto; text-align: center;">
+            <tr class="w3-light-grey" style="border:1px solid black;">
+                <th style="border:1px solid black;">Concept Cluster</th>
+                <th style="border:1px solid black;"><em>n<sub>q</sub></em></th>
+                <th style="border:1px solid black;">x̄</th>
+                <th style="border:1px solid black;">σ</th>
+                <th style="border:1px solid black;">99% CI</th>
+            </tr>
+            <tr style="border:1px solid black;">
+                <td style="border:1px solid black;">Conservation of Mass-Matter</td>
+                <td style="border:1px solid black;">10</td>
+                <td style="border:1px solid black;">75%</td>
+                <td style="border:1px solid black;">5.3%</td>
+                <td style="border:1px solid black;">[71%, 79%]</td>
+            </tr>
+            <tr style="border:1px solid black;">
+                <td style="border:1px solid black;">Phase Change</td>
+                <td style="border:1px solid black;">5</td>
+                <td style="border:1px solid black;">78%</td>
+                <td style="border:1px solid black;">7.1%</td>
+                <td style="border:1px solid black;">[69%, 86%]</td>
+            </tr>
+            <tr style="border:1px solid black;">
+                <td style="border:1px solid black;">Stoichiometry/Limiting Reagent</td>
+                <td style="border:1px solid black;">4</td>
+                <td style="border:1px solid black;">59%</td>
+                <td style="border:1px solid black;">19%</td>
+                <td style="border:1px solid black;">[35%, 83%]</td>
+            </tr>
+            <tr style="border:1px solid black;">
+                <td style="border:1px solid black;">Physical vs Chemical Changes</td>
+                <td style="border:1px solid black;">2</td>
+                <td style="border:1px solid black;">56%</td>
+                <td style="border:1px solid black;">18%</td>
+                <td style="border:1px solid black;">[24%, 88%]</td>
+            </tr>
+            <tr style="border:1px solid black;">
+                <td style="border:1px solid black;">Solutions</td>
+                <td style="border:1px solid black;">3</td>
+                <td style="border:1px solid black;">0.0%</td>
+                <td style="border:1px solid black;">0.0%</td>
+                <td style="border:1px solid black;">[0.0%, 0.0%]</td>
+            </tr>
+            <tr style="border:1px solid black;">
+                <td style="border:1px solid black;">Thermodynamics</td>
+                <td style="border:1px solid black;">2</td>
+                <td style="border:1px solid black;">19%</td>
+                <td style="border:1px solid black;">26%</td>
+                <td style="border:1px solid black;">[0.0%, 66%]</td>
+            </tr>
+        </table>
+        <br>
+        <p class="w3-text-dark-grey">Fig. 2 also shows the average score on questions in each concept cluster on the CCI by ChatGPT, with margins of error indicated by thin lines on bars.</p>
+        <img src="figure2.png" alt="Figure 2: GPT Average Score by CCI Concept Cluster" style="max-width:40%; display: block; margin-left: auto; margin-right: auto;">
+        </div>
+    </div>
+    <!-- Analysis -->
+    <div class="w3-row-padding w3-light-grey w3-padding-64 w3-container">
+        <div class="w3-content">
+        <h1 id="ANALYSIS">Analysis</h1>
+        <br>
+        <p class="w3-text-dark-grey">ChatGPT’s consistent incorrect responses may result in students receiving incorrect or confusing information when using ChatGPT as a learning tool for physics or chemistry. The following sections discuss the potential causes and implications of ChatGPT’s incorrect responses, and how educators can adapt to widespread student use of ChatGPT with these limitations in mind.</p>
+        <p class="w3-text-dark-grey">In some cases, ChatGPT’s responses to inventory questions represent accurate theoretical understanding of concepts in physics and chemistry, and its explanations may be helpful to students. For example, when asked to compare the collision forces between a large truck and small compact car, ChatGPT explains,</p>
+        <blockquote><p>According to Newton’s Third Law of Motion, for every action, there is an equal and opposite reaction. Therefore, during the collision between the truck and the car, both vehicles will exert equal and opposite forces on each other. The truck exerts the same amount of force on the car as the car exerts on the truck.</p></blockquote>
+        <p class="w3-text-dark-grey">In other cases, though, ChatGPT responses are likely to mislead learners. For example, ChatGPT’s responses to kinematics questions reflected common student difficulties distinguishing velocity and acceleration, as well as a tendency to add velocities as scalars rather than vectors<sup><a href="#CITE_10">[10]</a></sup>. When asked about a constant-velocity hockey puck that receives a horizontal “kick” in the direction horizontally perpendicular to its existing path, ChatGPT explained,</p>
+        <blockquote><p>Since the surface is frictionless, the horizontal component of the velocity of the puck should remain constant throughout its motion. Therefore, the speed of the puck just after it receives the kick should be the arithmetic sum of the speed it had before the kick and the speed it acquires from the kick. Thus, the answer is the arithmetic sum of speeds v0 and v.</p></blockquote>
+        <p class="w3-text-dark-grey">In another response to the hockey puck scenario, ChatGPT interpreted the instantaneous horizontal “kick” to be a long-lasting force that produces circular motion:</p>
+        <blockquote><p>When the hockey puck receives an instantaneous horizontal “kick” in the direction horizontally perpendicular to its existing path at point B, it will start to move in a curved path. Since the surface is frictionless, there is no force to slow down or stop the puck’s motion. The puck will continue moving with a constant speed but changing direction due to the force acting on it.</p></blockquote>
+        <p class="w3-text-dark-grey">Frequently, ChatGPT’s responses would describe the associated concept necessary for solving the question correctly, but apply the concept incorrectly. For example, when responding to a question about a sample of water with sugar dissolved in it, ChatGPT explained:</p>
+        <blockquote><p>When a solute like sugar is dissolved in a solvent like water, the molecules of the solute become evenly dispersed throughout the solution. If more solvent is added to the solution, the concentration of the solute decreases, but the number of solute molecules in the solution remains the same. Therefore, when additional water is added to the solution, the number of sugar molecules in the 0.5 L sample taken from the same height (0.5 L line) will be the same as before.</p></blockquote>
+        <p class="w3-text-dark-grey">In the above situation, ChatGPT’s explanation of concentration in solution is accurate, but it fails in correctly interpreting the applied context of taking a sample of a solution. Similarly, in a response to a question about water evaporating in a closed container, it treated the system as open:</p>
+        <blockquote><p>When all the water in a closed container is evaporated, the area that was previously filled with water molecules will be empty, and there will be no molecules in that area… If the area is viewed under a microscope, it will appear empty because there are no molecules present to reflect or scatter light.</p></blockquote>
+        <p class="w3-text-dark-grey">Occasionally, ChatGPT may misinterpret the ‘archetype’ of questions, causing incorrect responses that would be correct if the context were different. For example, in response to a question about a rocket engine firing with constant thrust at a right angle to the rocket’s initial motion, ChatGPT incorrectly states that the rocket’s speed is constant during the thrust:</p>
+        <blockquote><p>As the rocket’s engine produces a constant thrust at a right angle to the line [of initial motion], the rocket will move in a circular path... Therefore, the rocket’s speed will be constant, as it moves with a constant angular velocity.</p></blockquote>
+        <p class="w3-text-dark-grey">This response, however, would be correct if the rocket were using its thrust to maintain orbit around a planet, another common type of question associated with rockets. Sometimes, ChatGPT’s interpretations veer toward the surreal: in a question regarding a ball on a string that a person swings in a horizontal circle over their head, ChatGPT responds,</p>
+        <blockquote><p>According to Newton’s First Law of Motion, an object in motion will continue in a straight line with a constant speed unless acted upon by a net external force. In this case, the heavy ball is moving in a circular path due to the tension force in the string, which provides the necessary centripetal force. When the string suddenly breaks, there is no longer a centripetal force acting on the ball, and it will continue to move tangentially to its path at the moment of release. However, since the person is also moving in the circular path, the ball will also have a component of motion towards the person. Therefore, the path the ball will travel relative to the person is mostly tangential to its path at the moment of release, but curved inwards along the horizontal plane towards the person.</p></blockquote>
+        <p class="w3-text-dark-grey">The AI may again be interpreting the language of the prompt as similar enough to another archetype of question- in this case, misinterpreting a question about horizontal centripetal force as a question about orbits- to attempt to answer the prompt as if it were responding to the other archetype.</p>
+        <p class="w3-text-dark-grey">Overall, ChatGPT is an unreliable source of physics and chemistry reasoning. It frequently misinterprets the context, content, and constraints of questions.</p>
+        </div>
+    </div>
+    <!-- Educator Rec -->
+    <div class="w3-row-padding w3-padding-64 w3-container">
+        <div class="w3-content">
+        <h1 id="RECOMMEND">Recommendations for Educators</h1>
+        <br>
+        <p class="w3-text-dark-grey">ChatGPT offers accurate, conversational explanations of physics and chemistry theory in some cases, and incorrect or misleading explanations in others. Students who use it in the context of these fields may benefit from its explanations, but also risk having common misconceptions reinforced. One potential educational application of ChatGPT is producing practice problems that require students to identify and correct a problem ChatGPT has solved incorrectly. Because ChatGPT’s responses are worded convincingly and often purport accurate theoretical explanations to supplement incorrect practical explanations, such questions would challenge students to think critically about the information presented in ChatGPT’s response and formulate a logical flow of operations for solving the same problem. This would allow students to further familiarize themselves with applying concepts in physics, as well as giving them practice in fact-checking in these fields.</p>
+        <p class="w3-text-dark-grey">In general, an outright ban of ChatGPT in the classroom is unlikely to dissuade students from using the AI for their own purposes outside of the classroom; thus, giving students the tools to reconcile their own understandings with information purported by the AI would be highly beneficial to students who do use the AI regularly, especially as this technology becomes more integrated in our daily lives in the future.</p>
+        </div>
+    </div>
+    <!-- Bibliography -->
+    <div class="w3-row-padding w3-light-grey w3-padding-64 w3-container">
+        <div class="w3-content">
+        <h1 id="BIBLIOGRAPHY" style="text-align: center;">Bibliography</h1>
+        <br><br><br>
+        <p id="CITE_1" class="w3-text-dark-grey">[1] https://openai.com/blog/chatgpt. Retrieved 4/17/2023.</p>
+        <p id="CITE_2" class="w3-text-dark-grey">[2] https://www.tooltester.com/en/blog/chatgpt-statistics/. Retrieved 4/17/2023.</p>
+        <p id="CITE_3" class="w3-text-dark-grey">[3] M. Sullivan et al., J. Appl. Learning and Teaching, 6, 1 (2023).</p>
+        <p id="CITE_4" class="w3-text-dark-grey">[4] https://www.zerogpt.com/. Retrieved 4/17/2023.</p>
+        <p id="CITE_5" class="w3-text-dark-grey">[5] https://writer.com/ai-content-detector/. Retrieved 4/17/2023.</p>
+        <p id="CITE_6" class="w3-text-dark-grey">[6] OpenAI, arXiv preprint (to be published).</p>
+        <p id="CITE_7" class="w3-text-dark-grey">[7] P.M. Newton, EdArXiv preprint (to be published).</p>
+        <p id="CITE_8" class="w3-text-dark-grey">[8] A.C. Haensch et al. (to be published).</p>
+        <p id="CITE_9" class="w3-text-dark-grey">[9] D. Hestenes and I. Halloun, The Phys. Teach., 33, 8 (1995).</p>
+        <p id="CITE_10" class="w3-text-dark-grey">[10] D. Hestenes et al., The Phys, Teach., 30, 3 (1992).</p>
+        <p id="CITE_11" class="w3-text-dark-grey">[11] J. Barbera and P. Schwartz, J. Chem. Education, 91, 5 (2014).</p>
+        </div>
+    </div>
+  </body>
+</html>
